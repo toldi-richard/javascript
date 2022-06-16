@@ -84,7 +84,9 @@ for (let i = 0; i < buttonCount; i++) {
 }
 
 const cartIcon = document.getElementById('cart-icon')
+const cartContent = document.getElementById('cart-content')
 cartIcon.addEventListener('click', function(event) {
+    cartContent.classList.toggle('active')
     for (const id in cart) {
         // console.log(id, cart[id])
         console.log(products.find(product => product.id == id).name)
