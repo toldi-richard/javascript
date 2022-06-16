@@ -97,6 +97,7 @@ cartIcon.addEventListener('click', function(event) {
 
         cartItems.innerHTML += 
             `<li>
+            <button data-id="${currentProduct.id}">+</button>
                 ${cart[id]} db -
                 ${currentProduct.name}
                 * ${currentProduct.price} Ft/db
@@ -113,3 +114,4 @@ cartIcon.addEventListener('click', function(event) {
     Összesen: ${total} Ft
     </li>`
 })
+
