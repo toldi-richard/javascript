@@ -85,12 +85,31 @@ for (let i = 0; i < buttonCount; i++) {
 
 const cartIcon = document.getElementById('cart-icon')
 const cartContent = document.getElementById('cart-content')
+const cartItems = document.getElementById('cart-items')
+let total = 0
+
 cartIcon.addEventListener('click', function(event) {
     cartContent.classList.toggle('active')
+    cartIcon.classList.toggle('active')
+    cartItems.innerHTML = ''
     for (const id in cart) {
+        const currentProduct = products.find(product => product.id == id)
+
+        cartItems.innerHTML += 
+            `<li>
+                ${cart[id]} db -
+                ${currentProduct.name}
+                * ${currentProduct.price} Ft/db
+            </li>`
+
+        total += currentProduct.price * cart[id]
+
         // console.log(id, cart[id])
-        console.log(products.find(product => product.id == id).name)
-        console.log(cart[id])
-        console.log(products.find(product => product.id == id).price)
+        // console.log(products.find(product => product.id == id).name)
+        // console.log(cart[id])
+        // console.log(products.find(product => product.id == id).price)
     }
+    cartItems.innerHTML += `<li>
+    Összesen: ${total} Ft
+    </li>`
 })

@@ -91,6 +91,10 @@ nav a {
     transform: translateY(0);
 }
 
+#cart-icon.active {
+    background-color: #7C6A0A!important;
+}
+
 main h1 {
     margin: 0 1rem;
 }
@@ -139,5 +143,11 @@ main h1 {
 @media (max-width: 640px) {
     #vegburger, #cart-icon {
         margin: 1rem 2px 0 2px;
+    }
+}
+
+@media (min-width: 400px) {
+    #cart-content {
+        width: 229px;
     }
 }
