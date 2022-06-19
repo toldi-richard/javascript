@@ -38,7 +38,7 @@ const products = [
         inStock: true
     },
     {
-        id: 4,
+        id: 12,
         name: 'Extra',
         picture: 'afonya.jpg',
         description: 'Kézzel terlmelt egészség.',
@@ -61,9 +61,17 @@ products.forEach(product => {
     </div>`
 })
 
+
+
+
+
+
+
+
 // Kosár kezelése ******************************************************
 const cart = {}
 
+// Ennél a függvénynél el akarjuk kapni az eseményt
 const addToCart = (event) => {
     // kosárba és a + gombok szétválasztása
 
@@ -76,37 +84,31 @@ const addToCart = (event) => {
     // ternary operátor
     let target = event.target.id ? event.target.id : event.target.dataset.id
 
-    // Ha még nincs a kosárban akkor hozzáadjuk 1 db-vel
+    // Ha még nincs a kosárban akkor hozzáadjuk 1 db-vel, itt a target az a cart tömbünk indexe lesz!!
+    // Target az id száma lesz, és ezen az indexen szerepel majd a vásárolt mennyiség az adott termékből
+    // Az index meg az adott termék id-ját tükrözi nekünk
+    // Ha cart[x] nem létezik, akkor arra az indexre 1-t teszünk
     if (cart[target] == undefined) {
         cart[target] = 1
-        // Ha benne van akkor a darabszámát növeljük
+
+        // Ha benne van akkor a darabszámát növeljük, ha van ilyen indexünk, nüveljük eggyel
     } else {cart[target]++}
 }
 
-// Kigyűjtjük az addtocart css class-ú elemeket
-const addToCartButtons = document.getElementsByClassName('addToCart')
-// Megnézzük, hogy mennyi van belőle
-const buttonCount = addToCartButtons.length
 
-for (let i = 0; i < buttonCount; i++) {
-    // Klikk figyelő
-    addToCartButtons[i].addEventListener('click',addToCart) // callback függvény, nem kell a () se az event átadás
-}
-
-const cartIcon = document.getElementById('cart-icon')
-const cartContent = document.getElementById('cart-content')
-const cartItems = document.getElementById('cart-items')
-let total = 0
-
-cartIcon.addEventListener('click', function(event) {
-    cartContent.classList.toggle('active')
-    cartIcon.classList.toggle('active')
-
+// Kosár újrarenderelésére funkció **************
+const refreshCart = () => {
+    
+    // Kiürítjük, hogy az ul elemben a li-k ne halmozódjanak
     cartItems.innerHTML = ''
-
+    // Bejárjuk a cart-ot
     for (const id in cart) {
+        // A bejárás során az eltárolt id-akt kikeressük és eltáráljuk az objektumot
+        // a currentproduct-ba, amit a kosár mezőnél kiíratunk
         const currentProduct = products.find(product => product.id == id)
+        // Current product tárolja a kosárba rakott objektumokat....
 
+        // Itt az ul-ban kiíratjuk a current productban tárolt objektumokat
         cartItems.innerHTML += 
             `<li>
                 <button data-id="${currentProduct.id}"> + </button>
@@ -124,11 +126,47 @@ cartIcon.addEventListener('click', function(event) {
     }
 
     cartItems.innerHTML += `<li>
-
-    Összesen: ${total} Ft
-    </li>`
+    
+    Összesen: ${total.toLocaleString} Ft
+    </li>` // localstringgel az összeg formátuma tagolt lesz ezresek mentén
 
     // eseménykezelőre eseménykezelőt berakni nem biztos hogy érdemes, nagyobb programoknál
+}
+
+
+
+
+
+// Kigyűjtjük az addtocart css class-ú elemeket, a 4 db-t
+const addToCartButtons = document.getElementsByClassName('addToCart')
+
+// Megnézzük, hogy mennyi van belőle
+const buttonCount = addToCartButtons.length
+
+// Itt 1 event listenert sokszorosítunk, legírhatnánk 4 kül eventlistenert az id-kkal
+// de így szebb, sok esetén is jó és nem lesz tele eventlistenerrel a kódunk
+for (let i = 0; i < buttonCount; i++) {
+
+    // Klikk figyelő az x db gombra aminek van saját id-ja
+    addToCartButtons[i].addEventListener('click',addToCart) // callback függvény, nem kell a () se az event átadás
+}
+
+
+
+const cartIcon = document.getElementById('cart-icon') // Bevásárló kosár
+const cartContent = document.getElementById('cart-content') // Bevásárló kosár oldal sávja
+
+// Ez a kosár listáját, azon belül is az ul-t célozza meg, cart-items id-ja van
+// Ez nem tárol, ez csak a kosárnál az ul elemet célozza meg
+const cartItems = document.getElementById('cart-items')
+let total = 0
+
+cartIcon.addEventListener('click', function(event) { // A kosárra kattintáskor ez történik
+    cartContent.classList.toggle('active') // Bevásárló kosár oldal sávja aktiválása kap extra css-t
+    cartIcon.classList.toggle('active') // Bevesárló kosár hátternéek módosítására
+
+    // Innen töröltük a li-s kiíratást a kosárban történő ábrázolásáról
+    refreshCart()
 })
 
 // querySelector 1 element választ ki ami megfelel a paramétereknek
@@ -139,7 +177,26 @@ const plusButtons = document.querySelectorAll('#car-items button')
 // document.getElementsByTagName('body')[0].addEventListener('click', () => console.log('katt'))
 // document.getElementsByTagName('main')[0].addEventListener('click', () => console.log('katt'))
 
-cartItems.addEventListener('click', addToCart)
+
+// Ennek az eseménynek átadok egy függvényt ami meghívja az addToCart és a refresh függvényünket
+// cartItems.addEventListener('click', function () {
+    // vagy fat arrow-val
+cartItems.addEventListener('click', (event) => {
+    // A JS call back esetén automatán gondoskodik hogy elkapjuk az eventet, de itt kézzel kell
+    // erről gondoskodni, ezért (event) kell a () helyett
+    addToCart(event)
+    refreshCart()
+})
+
+
+
+
+
+
+
+
+
+
 
 
 
