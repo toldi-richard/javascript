@@ -124,11 +124,10 @@ const refreshCart = () => {
         // console.log(cart[id])
         // console.log(products.find(product => product.id == id).price)
     }
-
     cartItems.innerHTML += `<li>
-    
-    Összesen: ${total.toLocaleString} Ft
-    </li>` // localstringgel az összeg formátuma tagolt lesz ezresek mentén
+    Összesen: ${total.toLocaleString()} Ft
+    </li>` 
+    // localstringgel az összeg formátuma tagolt lesz ezresek mentén
 
     // eseménykezelőre eseménykezelőt berakni nem biztos hogy érdemes, nagyobb programoknál
 }
