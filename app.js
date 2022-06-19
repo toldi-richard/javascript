@@ -191,7 +191,7 @@ cartItems.addEventListener('click', (event) => {
 
 
 
-
+// TOTO: Végösszegre vagy a termékre kattintva a termék id-ja elveszik és a végösszeg is eltűnik
 
 
 
