@@ -11,56 +11,27 @@ vegburger.addEventListener('click', function (event) {
 
 // Termékek beillesztése *************************************************
 // Ez ált backendről jön API-tól
-const products = [
-    {
-        id: 1,
-        name: 'Málna',
-        picture: 'malna.jpg',
-        description: 'Kézzel terlmelt egészség.',
-        price: 3800,
-        inStock: true
-    },
-    {
-        id: 2,
-        name: 'Szeder',
-        picture: 'szeder.jpg',
-        description: 'Kézzel terlmelt egészség.',
-        price: 3250,
-        inStock: true,
-        variations: ['fehér', 'fekete']
-    },
-    {
-        id: 3,
-        name: 'Áfonya',
-        picture: 'afonya.jpg',
-        description: 'Kézzel terlmelt egészség.',
-        price: 1700,
-        inStock: true
-    },
-    {
-        id: 12,
-        name: 'Extra',
-        picture: 'afonya.jpg',
-        description: 'Kézzel terlmelt egészség.',
-        price: 1700,
-        inStock: true
-    }
-]
+let products = []
+fetch('https://hur.webmania.cc/products.json')
+    .then(response => response.json())
+    // .then(data => console.log(data))
+    // .then(data => products=data) mert products tömbben van az adatunk ezért ez kevés
+    
+    .then(data => { products=data.products,
+        products.forEach(product => {
+
+            productsSection.innerHTML += `<div>
+                <h2>${product.name}</h2>
+                <p>${product.description}</p>
+                <img src="./img/${product.picture}">
+                <h3>${product.price}</h3>
+                <a id="${product.id}" class='addToCart'>Kosárba</a>
+            </div>`
+        })
+    })
+    .catch(error => console.error(error))
 
 const productsSection = document.getElementById('products')
-
-// TODO: inStock, variations kezelése
-products.forEach(product => {
-
-    productsSection.innerHTML += `<div>
-        <h2>${product.name}</h2>
-        <p>${product.description}</p>
-        <img src="./img/${product.picture}">
-        <h3>${product.price}</h3>
-        <a id="${product.id}" class='addToCart'>Kosárba</a>
-    </div>`
-})
-
 
 
 
@@ -97,7 +68,7 @@ const addToCart = (event) => {
 
 
 // Kosár újrarenderelésére funkció **************
-const refreshCart = () => {
+const refreshCartItems = () => {
     
     // Kiürítjük, hogy az ul elemben a li-k ne halmozódjanak
     cartItems.innerHTML = ''
@@ -167,7 +138,7 @@ cartIcon.addEventListener('click', function(event) { // A kosárra kattintáskor
     cartIcon.classList.toggle('active') // Bevesárló kosár hátternéek módosítására
 
     // Innen töröltük a li-s kiíratást a kosárban történő ábrázolásáról
-    refreshCart()
+    refreshCartItems()
 })
 
 // querySelector 1 element választ ki ami megfelel a paramétereknek
@@ -186,9 +157,8 @@ cartItems.addEventListener('click', (event) => {
     // A JS call back esetén automatán gondoskodik hogy elkapjuk az eventet, de itt kézzel kell
     // erről gondoskodni, ezért (event) kell a () helyett
     addToCart(event)
-    refreshCart()
+    refreshCartItems()
 })
-
 
 
 
