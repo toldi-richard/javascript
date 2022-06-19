@@ -16,17 +16,32 @@ fetch('https://hur.webmania.cc/products.json')
     .then(response => response.json())
     // .then(data => console.log(data))
     // .then(data => products=data) mert products tömbben van az adatunk ezért ez kevés
-    
+
     .then(data => { products=data.products,
+
         products.forEach(product => {
 
             productsSection.innerHTML += `<div>
                 <h2>${product.name}</h2>
                 <p>${product.description}</p>
-                <img src="./img/${product.picture}">
+                <img src="${product.picture}">
                 <h3>${product.price}</h3>
                 <a id="${product.id}" class='addToCart'>Kosárba</a>
             </div>`
+        
+            // Kigyűjtjük az addtocart css class-ú elemeket, a 4 db-t
+            const addToCartButtons = document.getElementsByClassName('addToCart')
+
+            // Megnézzük, hogy mennyi van belőle
+            const buttonCount = addToCartButtons.length
+
+            // Itt 1 event listenert sokszorosítunk, legírhatnánk 4 kül eventlistenert az id-kkal
+            // de így szebb, sok esetén is jó és nem lesz tele eventlistenerrel a kódunk
+            for (let i = 0; i < buttonCount; i++) {
+
+                // Klikk figyelő az x db gombra aminek van saját id-ja
+                addToCartButtons[i].addEventListener('click',addToCart) // callback függvény, nem kell a () se az event átadás
+            }
         })
     })
     .catch(error => console.error(error))
@@ -89,9 +104,10 @@ const refreshCartItems = () => {
                 ${currentProduct.name}
                 * ${currentProduct.price} Ft/db
             </li>`
-        console.log("Növelés előtt:" + total)
+
+        // console.log("Növelés előtt:" + total) debughoz kellett, a végösszeg miatt
         total += currentProduct.price * cart[id]
-        console.log("Növelés után:" + total)
+        // console.log("Növelés után:" + total)
 
         // console.log(id, cart[id])
         // console.log(products.find(product => product.id == id).name)
@@ -102,27 +118,12 @@ const refreshCartItems = () => {
     Összesen: ${total.toLocaleString()} Ft
     </li>` 
     // localstringgel az összeg formátuma tagolt lesz ezresek mentén
-
     // eseménykezelőre eseménykezelőt berakni nem biztos hogy érdemes, nagyobb programoknál
 }
 
 
 
 
-
-// Kigyűjtjük az addtocart css class-ú elemeket, a 4 db-t
-const addToCartButtons = document.getElementsByClassName('addToCart')
-
-// Megnézzük, hogy mennyi van belőle
-const buttonCount = addToCartButtons.length
-
-// Itt 1 event listenert sokszorosítunk, legírhatnánk 4 kül eventlistenert az id-kkal
-// de így szebb, sok esetén is jó és nem lesz tele eventlistenerrel a kódunk
-for (let i = 0; i < buttonCount; i++) {
-
-    // Klikk figyelő az x db gombra aminek van saját id-ja
-    addToCartButtons[i].addEventListener('click',addToCart) // callback függvény, nem kell a () se az event átadás
-}
 
 
 

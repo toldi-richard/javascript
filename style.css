@@ -122,7 +122,6 @@ main h1 {
 
 #products img {
     width: 60%;
-    height: 30%;
 }
 
 #products a {
@@ -149,6 +148,31 @@ main h1 {
     #vegburger, #cart-icon {
         margin: 1rem 2px 0 2px;
     }
+
+}
+
+@media (min-width: 640px) {
+    #cart-icon {
+        margin: 1rem 5% 0 200px;
+    }
+}
+
+@media (min-width: 790px) {
+    #cart-icon {
+        margin: 1rem 6% 0 200px;
+    }
+}
+
+@media (min-width: 1150px) {
+    #cart-icon {
+        margin: 1rem 7% 0 200px;
+    }
+}
+
+@media (min-width: 1550px) {
+    #cart-icon {
+        margin: 1rem 8% 0 200px;
+    }
 }
 
 @media (min-width: 400px) {
@@ -159,4 +183,6 @@ main h1 {
 
 header i:hover, button:hover, section div a:hover {
     cursor: pointer;
+    background-color: #ffbf4800!important;
+    color: black!important;
 }
