@@ -101,6 +101,8 @@ const refreshCart = () => {
     
     // Kiürítjük, hogy az ul elemben a li-k ne halmozódjanak
     cartItems.innerHTML = ''
+    let total = 0
+    
     // Bejárjuk a cart-ot
     for (const id in cart) {
         // A bejárás során az eltárolt id-akt kikeressük és eltáráljuk az objektumot
@@ -116,8 +118,9 @@ const refreshCart = () => {
                 ${currentProduct.name}
                 * ${currentProduct.price} Ft/db
             </li>`
-
+        console.log("Növelés előtt:" + total)
         total += currentProduct.price * cart[id]
+        console.log("Növelés után:" + total)
 
         // console.log(id, cart[id])
         // console.log(products.find(product => product.id == id).name)
@@ -158,7 +161,6 @@ const cartContent = document.getElementById('cart-content') // Bevásárló kos�
 // Ez a kosár listáját, azon belül is az ul-t célozza meg, cart-items id-ja van
 // Ez nem tárol, ez csak a kosárnál az ul elemet célozza meg
 const cartItems = document.getElementById('cart-items')
-let total = 0
 
 cartIcon.addEventListener('click', function(event) { // A kosárra kattintáskor ez történik
     cartContent.classList.toggle('active') // Bevásárló kosár oldal sávja aktiválása kap extra css-t
