@@ -1,19 +1,24 @@
 // Oldalsó menü kezelése *************************************************
 const vegburger = document.getElementById('vegburger')
 const nav = document.getElementById('nav')
+
+
 // Klikkre css osztályokat cserélünk
-vegburger.addEventListener('click', () => {
+vegburger.addEventListener('click', function() {
     nav.classList.toggle('menu-active')
     vegburger.classList.toggle('fi-align-justify')
     vegburger.classList.toggle('fi-arrow-left')
     // vegburger.classList.toggle('burger-active')
+    console.log(this)
 })
-
+// this más lesz fat arrow esetén mint a hagyományos függvény formáknál
+// hagyományos esetén a html elem kerül kiírásra, fat arrow esetén window-t adja ki
 nav.addEventListener('mouseleave', () => {
     // nav.classList.toggle('menu-active') ez is jó add és a remove-t váltja
     nav.classList.remove('menu-active')
     vegburger.classList.remove('fi-arrow-left')
     vegburger.classList.add('fi-align-justify')
+    console.log(this)
 })
 
 // Termékek beillesztése *************************************************
@@ -208,6 +213,10 @@ cartItems.addEventListener('click', (event) => {
 
 
 
+
+// Változók **************************************************************************
+test = 5 // var test = 5 ugyanaz, nem jó mert globális és véletlen felülírhatjuk
+// === típusos összehasonlítás, ha nem csak az eredményt akarjuk 0 == '' is true-t ad
 
 
 
