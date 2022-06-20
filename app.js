@@ -27,16 +27,20 @@ fetch('https://hur.webmania.cc/products.json')
     .then(data => { products=data.products,
 
         products.forEach(product => {
-
-            productsSection.innerHTML += `<div>
+            // Kül változóba kiszerveztük, mert ha simán productsSection.innerHTML hoz fűzünk
+            // hamarabb zárja a div-t és a link/gomb kikerül a boxból
+            let content = productsSection.innerHTML
+            content += `<div>
                 <h2>${product.name}</h2>
                 <p>${product.description}</p>
                 <img src="${product.picture}">
                 <h3>${product.price}</h3>`
             if(product.stock > 0) {    
-                productsSection.innerHTML += `<a id="${product.id}" class='addToCart'>Kosárba</a>`}
-            else {productsSection.innerHTML += `Nem rendelhető!`}
-            productsSection.innerHTML +=`</div>`
+                content += `<a id="${product.id}" class='addToCart'>Kosárba</a>`}
+            else {content += `Nem rendelhető!`}
+            content +=`</div>`
+
+            productsSection.innerHTML = content
         
             // Kigyűjtjük az addtocart css class-ú elemeket, a 4 db-t
             const addToCartButtons = document.getElementsByClassName('addToCart')
