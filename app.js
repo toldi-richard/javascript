@@ -2,11 +2,18 @@
 const vegburger = document.getElementById('vegburger')
 const nav = document.getElementById('nav')
 // Klikkre css osztályokat cserélünk
-vegburger.addEventListener('click', function (event) {
+vegburger.addEventListener('click', () => {
     nav.classList.toggle('menu-active')
     vegburger.classList.toggle('fi-align-justify')
     vegburger.classList.toggle('fi-arrow-left')
     // vegburger.classList.toggle('burger-active')
+})
+
+nav.addEventListener('mouseleave', () => {
+    // nav.classList.toggle('menu-active') ez is jó add és a remove-t váltja
+    nav.classList.remove('menu-active')
+    vegburger.classList.remove('fi-arrow-left')
+    vegburger.classList.add('fi-align-justify')
 })
 
 // Termékek beillesztése *************************************************
