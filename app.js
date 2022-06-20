@@ -25,9 +25,11 @@ fetch('https://hur.webmania.cc/products.json')
                 <h2>${product.name}</h2>
                 <p>${product.description}</p>
                 <img src="${product.picture}">
-                <h3>${product.price}</h3>
-                <a id="${product.id}" class='addToCart'>Kosárba</a>
-            </div>`
+                <h3>${product.price}</h3>`
+            if(product.stock > 0) {    
+                productsSection.innerHTML += `<a id="${product.id}" class='addToCart'>Kosárba</a>`}
+            else {productsSection.innerHTML += `Nem rendelhető!`}
+            productsSection.innerHTML +=`</div>`
         
             // Kigyűjtjük az addtocart css class-ú elemeket, a 4 db-t
             const addToCartButtons = document.getElementsByClassName('addToCart')
@@ -35,7 +37,7 @@ fetch('https://hur.webmania.cc/products.json')
             // Megnézzük, hogy mennyi van belőle
             const buttonCount = addToCartButtons.length
 
-            // Itt 1 event listenert sokszorosítunk, legírhatnánk 4 kül eventlistenert az id-kkal
+            // Itt 1 event listenert sokszorosítunk, leírhatnánk 4 kül eventlistenert az id-kkal
             // de így szebb, sok esetén is jó és nem lesz tele eventlistenerrel a kódunk
             for (let i = 0; i < buttonCount; i++) {
 
@@ -81,13 +83,18 @@ const addToCart = (event) => {
     } else {cart[target]++}
 }
 
+// Mágikus számok :D, érdemes kiszervezni, mert 3-4 hó után nem biztos hogy tudjuk mi micsoda
+// keresést is könnyítheti...illetve a kód értelmezését segíthetik ha beszédesek a változó nevek
+const discountMinPrice = 30000
+const dicsountMinPieces = 10
+const discount = 0.1
 
 // Kosár újrarenderelésére funkció **************
 const refreshCartItems = () => {
     
     // Kiürítjük, hogy az ul elemben a li-k ne halmozódjanak
     cartItems.innerHTML = ''
-    let total = 0
+    let total = 0, maxPieces = 0
     
     // Bejárjuk a cart-ot
     for (const id in cart) {
@@ -97,6 +104,8 @@ const refreshCartItems = () => {
         // Current product tárolja a kosárba rakott objektumokat....
 
         // Itt az ul-ban kiíratjuk a current productban tárolt objektumokat
+
+        // TODO: - gomb berakása
         cartItems.innerHTML += 
             `<li>
                 <button data-id="${currentProduct.id}"> + </button>
@@ -113,12 +122,23 @@ const refreshCartItems = () => {
         // console.log(products.find(product => product.id == id).name)
         // console.log(cart[id])
         // console.log(products.find(product => product.id == id).price)
+
+        maxPieces = cart[id] > maxPieces ? cart[id] : maxPieces
     }
     cartItems.innerHTML += `<li>
     Összesen: ${total.toLocaleString()} Ft
     </li>` 
     // localstringgel az összeg formátuma tagolt lesz ezresek mentén
     // eseménykezelőre eseménykezelőt berakni nem biztos hogy érdemes, nagyobb programoknál
+
+    if(total > discountMinPrice || maxPieces >= dicsountMinPieces) {
+        cartItems.innerHTML += `<li>
+        Kedvezmény: ${(total * discount).toLocaleString()} Ft
+        </li>`
+        cartItems.innerHTML += `<li>
+        Fizetendő: ${(total - total * discount).toLocaleString()} Ft
+        </li>` 
+    }
 }
 
 
@@ -163,9 +183,14 @@ cartItems.addEventListener('click', (event) => {
 
 
 
-// TOTO: Végösszegre vagy a termékre kattintva a termék id-ja elveszik és a végösszeg is eltűnik
 
 
+// TODO: Végösszegre vagy a termékre kattintva a termék id-ja elveszik és a végösszeg is eltűnik
+// TODO: Rendelési adatok megadása és akár emailben leküldése....
+// TODO: Esetleg más színek használata...új dizájn
+// TODO: PHP MVC-re átalakítás gyakorlásnak
+// TODO: VueJS-re átalakítás gyakorlásnak
+// TODO: C# ASP webapi db-vel és VueJS cliensel megcsinálni átalakítás gyakorlásnak
 
 
 

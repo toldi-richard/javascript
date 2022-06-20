@@ -93,7 +93,7 @@ nav a {
 
 #cart-items li:last-child{
     font-weight: bold;
-    font-size: 150%;
+    font-size: 130%;
 }
 
 #cart-icon.active {
